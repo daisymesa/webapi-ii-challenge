@@ -3,7 +3,7 @@ const Data = require('./data/db');
 
 const router = express.Router();
 
-// Creates a post using the information sent inside the request body.
+// 1. Creates a post using the information sent inside the request body.
 router.post('/', async (req, res) => {
     const { title, contents } = req.body;
     if (!title || !contents) {
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-// Creates a comment for the post with the specified id using information sent inside of the request body.
+// 2. Creates a comment for the post with the specified id using information sent inside of the request body.
 router.post('/:id/comments', async (req, res) => {
     try {
 
@@ -30,17 +30,14 @@ router.post('/:id/comments', async (req, res) => {
     }
 })
 
-// Returns an array of all the post objects contained in the database.
+// 3. Returns an array of all the post objects contained in the database.
 router.get('/', async (req, res) => {
-    try {
-        const posts = await Data.find(req.query);
-        res.status()
-    } catch (error) {
-
-    }
+    db.find()
+        .then(posts => res.status(200).json(posts))
+        .catch(error => res.status(500).json({ error: 'The posts information could not be retrieved.' }))
 })
 
-// Returns the post object with the specified id.
+// 4. Returns the post object with the specified id.
 router.get('/:id', async (req, res) => {
     try {
 
@@ -49,7 +46,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-// Returns an array of all the comment objects associated with the post with the specified id.
+// 5. Returns an array of all the comment objects associated with the post with the specified id.
 router.get('/:id/comments', async (req, res) => {
     try {
 
@@ -58,7 +55,7 @@ router.get('/:id/comments', async (req, res) => {
     }
 })
 
-// Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
+// 6. Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
 router.delete('/:id', async (req, res) => {
     try {
 
@@ -67,7 +64,7 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-// Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
+// 7. Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
 router.put('/:id', async (req, res) => {
     try {
 
