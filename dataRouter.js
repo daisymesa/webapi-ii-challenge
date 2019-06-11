@@ -56,11 +56,19 @@ router.get('/:id', async (req, res) => {
 
 // 5. Returns an array of all the comment objects associated with the post with the specified id.
 router.get('/:id/comments', async (req, res) => {
-    try {
-
-    } catch (error) {
-
-    }
+    const { comments } = req.params.id;
+    db.findCommentsById(comments)
+        .then(comments => {
+            if (comments) {
+                db.findCommentsById(comments)
+                    .then(comments => {
+                        res.status(200).json(comments);
+                    });
+            } else {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' })
+            }
+        })
+        .catch(error => res.status(500).json({ error: 'The comments information could not be retrieved.' }))
 })
 
 // 6. Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
