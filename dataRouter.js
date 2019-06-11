@@ -5,10 +5,19 @@ const router = express.Router();
 
 // Creates a post using the information sent inside the request body.
 router.post('/', async (req, res) => {
-    try {
-
-    } catch (error) {
-
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+        res.status(400).json({
+            errorMessage: 'Please provide title and contents for this post.'
+        })
+    } else {
+        db.insert( { title, contents } )
+        .then(post => {
+            res.status(201).json(post)
+        })
+        .catch(error => {
+            res.status(500).json({ error: 'There was an error while saving the post to the database.' })
+        })
     }
 })
 
@@ -24,7 +33,8 @@ router.post('/:id/comments', async (req, res) => {
 // Returns an array of all the post objects contained in the database.
 router.get('/', async (req, res) => {
     try {
-
+        const posts = await Data.find(req.query);
+        res.status()
     } catch (error) {
 
     }
@@ -65,9 +75,6 @@ router.put('/:id', async (req, res) => {
 
     }
 })
-
-
-
 
 
 module.exports = router;
