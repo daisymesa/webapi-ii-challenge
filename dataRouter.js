@@ -11,13 +11,13 @@ router.post('/', async (req, res) => {
             errorMessage: 'Please provide title and contents for this post.'
         })
     } else {
-        db.insert( { title, contents } )
-        .then(post => {
-            res.status(201).json(post)
-        })
-        .catch(error => {
-            res.status(500).json({ error: 'There was an error while saving the post to the database.' })
-        })
+        db.insert({ title, contents })
+            .then(post => {
+                res.status(201).json(post)
+            })
+            .catch(error => {
+                res.status(500).json({ error: 'There was an error while saving the post to the database.' })
+            })
     }
 })
 
@@ -39,11 +39,19 @@ router.get('/', async (req, res) => {
 
 // 4. Returns the post object with the specified id.
 router.get('/:id', async (req, res) => {
-    try {
-
-    } catch (error) {
-
-    }
+    const id = req.params.id;
+    db.findById(id)
+        .then(id => {
+            if (id) {
+                db.findById(id)
+                    .then(id => {
+                        res.status(200).json(id);
+                    });
+            } else {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' })
+            }
+        })
+        .catch(error => res.status(500).json({ error: 'The post information could not be retrieved.' }))
 })
 
 // 5. Returns an array of all the comment objects associated with the post with the specified id.
